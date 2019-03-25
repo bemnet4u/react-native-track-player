@@ -1,5 +1,6 @@
 package com.guichaguri.trackplayer.service.metadata;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -54,12 +55,14 @@ public class MetadataManager {
         this.manager = manager;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            System.out.println("Creating playback notification channel for sdk : " + Build.VERSION.SDK_INT);
             NotificationChannel channel = new NotificationChannel(Utils.NOTIFICATION_CHANNEL, "Playback", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setShowBadge(false);
             channel.setSound(null, null);
 
             NotificationManager not = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
             not.createNotificationChannel(channel);
+            System.out.println("Created notification channel...");
         }
 
         this.builder = new NotificationCompat.Builder(service, Utils.NOTIFICATION_CHANNEL);
@@ -300,8 +303,11 @@ public class MetadataManager {
 
     private void updateNotification() {
         if(session.isActive()) {
-            service.startForeground(1, builder.build());
+            Notification notification = builder.build();
+            System.out.print("Starting service with Updating notification with id 1. Noti: " + notification);
+            service.startForeground(1,  notification);
         } else {
+            System.out.print("Stopping music service.");
             service.stopForeground(true);
         }
     }

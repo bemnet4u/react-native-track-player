@@ -151,6 +151,7 @@ public class MusicModule extends ReactContextBaseJavaModule implements ServiceCo
         final Bundle options = Arguments.toBundle(data);
 
         waitForConnection(() -> binder.setupPlayer(options, promise));
+
     }
 
     @ReactMethod
