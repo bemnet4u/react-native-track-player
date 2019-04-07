@@ -80,7 +80,7 @@ public class MusicService extends HeadlessJsTaskService {
                 Notification notification;
                 System.out.println("Creating notification in service for sdk : " + Build.VERSION.SDK_INT);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    String channel = NotificationChannel.DEFAULT_CHANNEL_ID;
+                    String channel = "amharic-radio-temp-notification-id";
                     System.out.println("Creating a new channel in service id: " + channel);
                     NotificationChannel notificationChannel = new NotificationChannel(channel, "Playback", NotificationManager.IMPORTANCE_DEFAULT);
                     NotificationManager not = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
