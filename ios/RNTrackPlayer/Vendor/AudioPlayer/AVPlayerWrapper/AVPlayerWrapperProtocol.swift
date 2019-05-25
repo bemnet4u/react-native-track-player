@@ -8,8 +8,8 @@
 import Foundation
 import AVFoundation
 
-
-protocol AVPlayerWrapperProtocol {
+// https://github.com/react-native-kit/react-native-track-player/issues/516
+protocol AVPlayerWrapperProtocol : class {
     
     var state: AVPlayerWrapperState { get }
     
