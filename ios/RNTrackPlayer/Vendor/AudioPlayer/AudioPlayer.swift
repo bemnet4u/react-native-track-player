@@ -263,7 +263,7 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
      - Artist
      - Title
      - Album title
-     - Album artwork
+     - Album artwork	
      */
     public func loadNowPlayingMetaValues() {
         guard let item = currentItem else { return }
@@ -296,7 +296,8 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
     }
     
     private func updateNowPlayingRate(_ rate: Float) {
-        nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(Double(rate)))
+        // This is what is causing now playing to be reset.
+        //nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(Double(rate)))
     }
     
     private func updateNowPlayingCurrentTime(_ currentTime: Double) {
