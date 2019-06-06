@@ -1,5 +1,6 @@
 package com.guichaguri.trackplayer.service.metadata;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -293,8 +294,11 @@ public class MetadataManager {
 
     private void updateNotification() {
         if(session.isActive()) {
-            service.startForeground(1, builder.build());
+            Notification notification = builder.build();
+            System.out.print("Starting service with Updating notification with id 1. Noti: " + notification);
+            service.startForeground(1,  notification);
         } else {
+            System.out.print("Stopping music service.");
             service.stopForeground(true);
         }
     }

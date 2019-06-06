@@ -1,5 +1,6 @@
 package com.guichaguri.trackplayer.module;
 
+import android.app.Notification;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -152,6 +153,7 @@ public class MusicModule extends ReactContextBaseJavaModule implements ServiceCo
         final Bundle options = Arguments.toBundle(data);
 
         waitForConnection(() -> binder.setupPlayer(options, promise));
+
     }
 
     @ReactMethod

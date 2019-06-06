@@ -74,6 +74,7 @@ public class MusicService extends HeadlessJsTaskService {
             serviceForeground = manager.getMetadata().getSession().isActive();
         }
 
+        System.out.print("Service is foreground: " + serviceForeground);
         if(!serviceForeground) {
             ReactInstanceManager reactInstanceManager = getReactNativeHost().getReactInstanceManager();
             ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
@@ -85,6 +86,7 @@ public class MusicService extends HeadlessJsTaskService {
                 startForeground(1, new NotificationCompat.Builder(this, Utils.NOTIFICATION_CHANNEL).build());
                 // Stops the service right after
                 stopSelf();
+                System.out.println("Notification stopped.");
             }
         }
     }
@@ -101,8 +103,10 @@ public class MusicService extends HeadlessJsTaskService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        System.out.println("onStartCommand called.");
         if(intent != null && Intent.ACTION_MEDIA_BUTTON.equals(intent.getAction())) {
             // Check if the app is on background, then starts a foreground service and then ends it right after
+            System.out.println("Calling onStartForeground");
             onStartForeground();
             
             if(manager != null) {
@@ -115,12 +119,14 @@ public class MusicService extends HeadlessJsTaskService {
         manager = new MusicManager(this);
         handler = new Handler();
 
+        System.out.println("calling super.onStartCommand");
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
+        System.out.println("onDestroy called.");
         super.onDestroy();
 
         destroy();
@@ -128,10 +134,8 @@ public class MusicService extends HeadlessJsTaskService {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
+        System.out.println("onTaskRemoved called.");
         super.onTaskRemoved(rootIntent);
-
-        if (manager == null || manager.shouldStopWithApp()) {
-            stopSelf();
-        }
+        stopSelf();
     }
 }
