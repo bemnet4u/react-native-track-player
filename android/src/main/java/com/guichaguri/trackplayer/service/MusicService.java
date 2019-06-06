@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
  */
 public class MusicService extends HeadlessJsTaskService {
 
-    private static final String MUSIC_SERVICE_NOTIFICATION_CHANNEL_ID = "MusicService";
 
     MusicManager manager;
     Handler handler;
@@ -32,14 +31,7 @@ public class MusicService extends HeadlessJsTaskService {
     @Override
     public void onCreate(){
         super.onCreate();
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel(MUSIC_SERVICE_NOTIFICATION_CHANNEL_ID,"MusicService",
-                    NotificationManager.IMPORTANCE_LOW);
-            channel.setShowBadge(false);
-            channel.setSound(null, null);
-            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
-        }
+        Utils.createNotificationChannel(this);
     }
 
     @Nullable
@@ -88,14 +80,9 @@ public class MusicService extends HeadlessJsTaskService {
 
             // Checks whether there is a React activity
             if(reactContext == null || !reactContext.hasCurrentActivity()) {
-                String channel = null;
-
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    channel = MUSIC_SERVICE_NOTIFICATION_CHANNEL_ID;
-                }
-
+                Utils.createNotificationChannel(this);
                 // Sets the service to foreground with an empty notification
-                startForeground(1, new NotificationCompat.Builder(this, channel).build());
+                startForeground(1, new NotificationCompat.Builder(this, Utils.NOTIFICATION_CHANNEL).build());
                 // Stops the service right after
                 stopSelf();
             }
