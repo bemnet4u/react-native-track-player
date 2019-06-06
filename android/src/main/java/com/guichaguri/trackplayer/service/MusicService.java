@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.media.session.MediaButtonReceiver;
 
@@ -32,6 +33,9 @@ public class MusicService extends HeadlessJsTaskService {
     public void onCreate(){
         super.onCreate();
         Utils.createNotificationChannel(this);
+        // https://stackoverflow.com/questions/44425584/context-startforegroundservice-did-not-then-call-service-startforeground
+        // Need to call startForeground to make sure we don't crash.
+        startForeground(1, new NotificationCompat.Builder(this, Utils.NOTIFICATION_CHANNEL).build());
     }
 
     @Nullable
