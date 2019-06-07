@@ -168,6 +168,12 @@ class AVPlayerWrapper: AVPlayerWrapperProtocol {
 
         // Set item
         let currentAsset = AVURLAsset(url: url)
+        // remove observer.
+        // https://stackoverflow.com/questions/26256982/avplayer-was-deallocated-while-key-value-observers-were-still-registered-with-it
+        
+        playerItemObserver.stopObservingCurrentItem();
+        playerItemNotificationObserver.stopObservingCurrentItem();
+        
         let currentItem = AVPlayerItem(asset: currentAsset, automaticallyLoadedAssetKeys: [Constants.assetPlayableKey])
         currentItem.preferredForwardBufferDuration = bufferDuration
         avPlayer.replaceCurrentItem(with: currentItem)
