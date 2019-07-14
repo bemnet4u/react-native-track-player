@@ -277,7 +277,8 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
         guard automaticallyUpdateNowPlayingInfo else { return }
         nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.elapsedPlaybackTime(wrapper.currentTime))
         nowPlayingInfoController.set(keyValue: MediaItemProperty.duration(wrapper.duration))
-        nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(Double(wrapper.rate)))
+        // avoid crash https://fabric.io/bemnet/ios/apps/shegerapps.amharicradio/issues/6dd0dda02c7a2ecda7943a13eae92b12/sessions/5991862c5b6e4bbaae1cfd580d81b720_DNE_0_v2?
+        // nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.playbackRate(Double(wrapper.rate)))
     }
     
     // MARK: - Private

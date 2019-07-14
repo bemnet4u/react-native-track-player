@@ -18,7 +18,11 @@ public class NowPlayingInfoController {
     
     let infoCenter: MPNowPlayingInfoCenter
     
-    var info: [String: Any]
+    private var _info: [String: Any] = [:]
+    
+    var info: [String: Any] {
+        return _info
+    }
     
     /**
      Create a new NowPlayingInfoController.
@@ -27,7 +31,7 @@ public class NowPlayingInfoController {
      */
     public init(infoCenter: MPNowPlayingInfoCenter = MPNowPlayingInfoCenter.default()) {
         self.infoCenter = infoCenter
-        self.info = [:]
+        self._info = [:]
     }
     
     /**
@@ -36,9 +40,11 @@ public class NowPlayingInfoController {
      - Warning: This will reset the now playing info completely! Use this function when starting playback of a new item.
      */
     public func set(keyValues: [NowPlayingInfoKeyValue]) {
-        self.info = [:]
+        self._info = [:]
         keyValues.forEach { (keyValue) in
-            info[keyValue.getKey()] = keyValue.getValue()
+            // https://stackoverflow.com/questions/26787070/exc-bad-access-when-updating-swift-dictionary-after-using-it-for-evaluate-nsexpr?rq=1
+            let stupidHack = self._info
+            self._info[keyValue.getKey()] = keyValue.getValue()
         }
     }
     
@@ -46,8 +52,11 @@ public class NowPlayingInfoController {
      This updates a single value in the now playing info.
      */
     public func set(keyValue: NowPlayingInfoKeyValue) {
-        info[keyValue.getKey()] = keyValue.getValue()
-        self.infoCenter.nowPlayingInfo = info
+        if let value = keyValue.getValue() {
+            let stupidHack = self._info
+            _info[keyValue.getKey()] = value
+            self.infoCenter.nowPlayingInfo = _info
+        }
     }
     
 }
