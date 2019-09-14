@@ -67,6 +67,7 @@ public class Track {
     public RatingCompat rating;
 
     public final long queueId;
+    public String advertiserId = "";
 
     public Track(Context context, Bundle bundle, int ratingType) {
         id = bundle.getString("id");
@@ -93,6 +94,7 @@ public class Track {
         artwork = Utils.getUri(context, bundle, "artwork");
 
         title = bundle.getString("title");
+        advertiserId = bundle.getString("advertiserId");
         artist = bundle.getString("artist");
         album = bundle.getString("album");
         date = bundle.getString("date");
@@ -144,7 +146,7 @@ public class Track {
     public MediaSource toMediaSource(Context ctx, LocalPlayback playback) {
         // Updates the user agent if not set
         if(userAgent == null || userAgent.isEmpty())
-            userAgent = Util.getUserAgent(ctx, "react-native-track-player");
+            userAgent = Util.getUserAgent(ctx, "Amharic Radio");
 
         DataSource.Factory ds;
 
@@ -178,7 +180,7 @@ public class Track {
                     DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                     true
             );
-
+            ((DefaultHttpDataSourceFactory)ds).setDefaultRequestProperty("X-Listener-Id",advertiserId);
             ds = playback.enableCaching(ds);
 
         }
