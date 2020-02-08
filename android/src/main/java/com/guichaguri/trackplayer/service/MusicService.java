@@ -1,23 +1,21 @@
 package com.guichaguri.trackplayer.service;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.media.session.MediaButtonReceiver;
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.media.session.MediaButtonReceiver;
 
 import com.facebook.react.HeadlessJsTaskService;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.jstasks.HeadlessJsTaskConfig;
+import com.guichaguri.trackplayer.service.Utils;
 import javax.annotation.Nullable;
 
 /**
@@ -85,7 +83,8 @@ public class MusicService extends HeadlessJsTaskService {
 
             // Checks whether there is a React activity
             if(reactContext == null || !reactContext.hasCurrentActivity()) {
-                Utils.createNotificationChannel(this);
+                String channel = Utils.getNotificationChannel((Context) this);
+
                 // Sets the service to foreground with an empty notification
                 startForeground(1, new NotificationCompat.Builder(this, Utils.NOTIFICATION_CHANNEL).build());
                 // Stops the service right after
@@ -125,7 +124,7 @@ public class MusicService extends HeadlessJsTaskService {
 
         System.out.println("calling super.onStartCommand");
         super.onStartCommand(intent, flags, startId);
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override
