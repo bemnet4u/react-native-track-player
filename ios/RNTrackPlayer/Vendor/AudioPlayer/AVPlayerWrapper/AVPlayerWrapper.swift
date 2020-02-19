@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 import MediaPlayer
+import AdSupport
 
 public enum PlaybackEndedReason: String {
     case playedUntilEnd
@@ -167,7 +168,8 @@ class AVPlayerWrapper: AVPlayerWrapperProtocol {
         _playWhenReady = playWhenReady
 
         // Set item
-        let currentAsset = AVURLAsset(url: url)
+        let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+        let currentAsset = AVURLAsset(url: url, options: ["AVURLAssetHTTPHeaderFieldsKey":["X-Listener-Id":idfa]])
         let currentItem = AVPlayerItem(asset: currentAsset, automaticallyLoadedAssetKeys: [Constants.assetPlayableKey])
         currentItem.preferredForwardBufferDuration = bufferDuration
         avPlayer.replaceCurrentItem(with: currentItem)
